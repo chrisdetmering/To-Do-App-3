@@ -1,48 +1,54 @@
-const form = document.querySelector('#form');
-var clear = document.querySelector('#clear') 
-const input = document.getElementById('task')
-var list = document.getElementById('taskList');
+const input = document.getElementById('task');
+const list = document.getElementById('taskList');
 
-
-form.addEventListener('submit', function (e){
+document.querySelector('#form')
+.addEventListener('submit', function (e){
     e.preventDefault();
+    const taskText = input.value; 
     
-    if (input.value === ""){
-       window.alert("Please enter an item!");
+    if (taskText === ""){
+       alert("Please enter an item!");
     } else {
-        addTask(input.value);
+        addTask(taskText);
   
     input.value = "";
     };
 });
 
-
-function addTask(task){
+function addTask(taskText){
     const li = document.createElement('li');
-    const deleteButton = document.createElement('button')
-    deleteButton.textContent = " x ";
+    const deleteButton = createDeleteButton(li);
+
+    li.appendChild(document.createTextNode(taskText));
     li.appendChild(deleteButton);
-    li.appendChild(document.createTextNode(input.value));
+    addToggleTodo(li);
     list.appendChild(li);
-
-
-    deleteButton.addEventListener('click', function (e){
-        li.remove()
-    });
-
-
-    li.addEventListener('click', function(e){
-        if (li.style.textDecoration ==="line-through"){
-            li.style.textDecoration = 'none'
-        } else {
-            li.style.textDecoration = "line-through"
-        };
-     });
-
 };
 
 
-clear.addEventListener('click', function(){
+function createDeleteButton(todo) {
+    const deleteButton = document.createElement('button')
+    deleteButton.textContent = " x ";
+
+    deleteButton.addEventListener('click', function (e){
+        todo.remove()
+    });
+
+    return deleteButton;
+}
+
+function addToggleTodo(todo) {
+    todo.addEventListener('click', function(e){
+        if (todo.style.textDecoration ==="line-through"){
+            todo.style.textDecoration = 'none'
+        } else {
+            todo.style.textDecoration = "line-through"
+        };
+     });
+}
+
+document.querySelector('#clear')
+.addEventListener('click', function(){
    list.innerHTML = "";
 });
 
